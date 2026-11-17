@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CallGuard — защита от спам-звонков для Android</title>
+  <meta name="description" content="CallGuard сбрасывает звонки с номеров, которых нет в контактах, ещё до того, как телефон зазвонит. Свои дозвонятся. Без интернета, без рекламы.">
+  <meta name="theme-color" content="#1b6b44">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CallGuard">
+  <meta property="og:description" content="Звонят только свои. Незнакомые номера сбрасываются ещё до первого гудка.">
+  <meta property="og:url" content="https://nightwelf.github.io/callguard/">
+  <meta property="og:image" content="https://nightwelf.github.io/callguard/assets/og.png">
+  <link rel="canonical" href="https://nightwelf.github.io/callguard/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/manrope-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/style.css">
+  <script>document.documentElement.classList.add("js");</script>
+  <script src="assets/main.js" defer></script>
+</head>
+<body>
+
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <!-- Icons: Material Icons (Apache 2.0). -->
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></symbol>
+  <symbol id="i-shop" viewBox="0 0 24 24"><path d="M16 6V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H2v13c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6h-6zm-6-2h4v2h-4V4zM9 18V9l7.5 4L9 18z"/></symbol>
+  <symbol id="i-store" viewBox="0 0 24 24"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></symbol>
+  <symbol id="i-contacts" viewBox="0 0 24 24"><path d="M20 0H4v2h16V0zM4 24h16v-2H4v2zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2.75c1.24 0 2.25 1.01 2.25 2.25s-1.01 2.25-2.25 2.25S9.75 10.24 9.75 9 10.76 6.75 12 6.75zM17 17H7v-1.5c0-1.67 3.33-2.5 5-2.5s5 .83 5 2.5V17z"/></symbol>
+  <symbol id="i-block" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9A7.902 7.902 0 0 1 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1A7.902 7.902 0 0 1 20 12c0 4.42-3.58 8-8 8z"/></symbol>
+  <symbol id="i-replay" viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></symbol>
+  <symbol id="i-outgoing" viewBox="0 0 24 24"><path d="M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></symbol>
+  <symbol id="i-volume-off" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.796 8.796 0 0 0 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06a8.99 8.99 0 0 0 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></symbol>
+  <symbol id="i-person" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></symbol>
+  <symbol id="i-wifi-off" viewBox="0 0 24 24"><path d="M23.64 7c-.45-.34-4.93-4-11.64-4-1.5 0-2.89.19-4.15.48L18.18 13.8 23.64 7zm-6.6 8.22L3.27 1.44 2 2.72l2.05 2.06C1.91 5.76.59 6.82.36 7l11.63 14.49.01.01.01-.01 3.9-4.86 3.32 3.32 1.27-1.27-3.46-3.46z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></symbol>
+</svg>
+
+<a class="skip" href="#main">К содержанию</a>
+
+<header class="header">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="assets/favicon.svg" alt="" width="34" height="34"><span>CallGuard</span></a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#how">Как это работает</a>
+      <a href="#features">Возможности</a>
+      <a href="#privacy">Приватность</a>
+      <a href="#faq">Вопросы</a>
+      <a href="#beta">Тест</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="wrap">
+      <div>
+        <span class="eyebrow"><i><svg class="ic"><use href="#i-shield"/></svg></i>Для Android · без интернета</span>
+        <h1>Звонят только <em>свои</em></h1>
+        <p class="lead">Надоели «служба безопасности банка», опросы и роботы? CallGuard сбрасывает звонки с номеров, которых нет в контактах, ещё до того, как телефон зазвонит. Знакомые, курьер и поликлиника дозваниваются как обычно.</p>
+        <!-- Not in the stores yet: swap in the real store links after publishing. -->
+        <div class="stores">
+          <a class="store" aria-disabled="true"><svg class="ic"><use href="#i-shop"/></svg>
+            <span><small>Скоро в</small><b>Google Play</b></span></a>
+          <a class="store" aria-disabled="true"><svg class="ic"><use href="#i-store"/></svg>
+            <span><small>Скоро в</small><b>RuStore</b></span></a>
+        </div>
+        <ul class="facts">
+          <li><svg class="ic"><use href="#i-check"/></svg>Android 10+</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Без аккаунта</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Без рекламы</li>
+        </ul>
+      </div>
+
+      <div class="visual" aria-hidden="true">
+        <div class="notif">
+          <img src="assets/favicon.svg" alt="" width="38" height="38">
+          <div>
+            <p><span>CallGuard</span><span>сейчас</span></p>
+            <strong>Звонок отбит</strong>
+            <p>+7 495 789-00-11</p>
+          </div>
+        </div>
+        <div class="phone">
+          <div class="screen"><img src="assets/shots/1_home.webp" alt="" width="540" height="1200"></div>
+        </div>
+        <div class="notif n2">
+          <img src="assets/favicon.svg" alt="" width="38" height="38">
+          <div>
+            <p><span>Входящий</span><span>10:42</span></p>
+            <strong>Мама</strong>
+            <p>Есть в контактах&nbsp;— телефон звонит</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="kicker">Как это работает</span>
+        <h2>Три шага&nbsp;— и тишина от <em>незнакомых</em></h2>
+      </div>
+      <div class="steps">
+        <article class="card step reveal">
+          <svg class="ic"><use href="#i-contacts"/></svg>
+          <h3>Откройте доступ к контактам</h3>
+          <p>Чтобы отличать знакомые номера. Контакты только читаются на телефоне и никуда не отправляются.</p>
+        </article>
+        <article class="card step reveal" style="--delay:.1s">
+          <svg class="ic"><use href="#i-shield"/></svg>
+          <h3>Сделайте CallGuard фильтром звонков</h3>
+          <p>Одно системное окно. Android будет спрашивать CallGuard о каждом входящем. Звонилку по умолчанию менять не нужно.</p>
+        </article>
+        <article class="card step reveal" style="--delay:.2s">
+          <svg class="ic"><use href="#i-block"/></svg>
+          <h3>Незнакомые больше не звонят</h3>
+          <p>Звонок с номера не из контактов и не из белого списка сбрасывается до первого гудка и попадает в журнал.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="screens" style="padding-top:0">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="kicker">Интерфейс</span>
+        <h2>Ничего <em>лишнего</em></h2>
+        <p>Снято на эмуляторе, номера выдуманы.</p>
+      </div>
+      <div class="shots">
+        <figure class="shot reveal">
+          <div class="frame"><img src="assets/shots/1_home.webp" alt="Главный экран: защита работает, отбито сегодня 6 звонков" width="540" height="1200" loading="lazy"></div>
+          <figcaption><b>Главная</b>Защита и последние отбитые</figcaption>
+        </figure>
+        <figure class="shot reveal" style="--delay:.08s">
+          <div class="frame"><img src="assets/shots/2_journal.webp" alt="Журнал отбитых звонков" width="540" height="1200" loading="lazy"></div>
+          <figcaption><b>Журнал</b>Все отбитые за 30 дней</figcaption>
+        </figure>
+        <figure class="shot reveal" style="--delay:.16s">
+          <div class="frame"><img src="assets/shots/3_whitelist.webp" alt="Белый список: банк, поликлиника, курьер, префикс +7343" width="540" height="1200" loading="lazy"></div>
+          <figcaption><b>Белый список</b>Номера и префиксы</figcaption>
+        </figure>
+        <figure class="shot reveal" style="--delay:.24s">
+          <div class="frame"><img src="assets/shots/4_check.webp" alt="Проверка номера: пройдёт, номер в белом списке" width="540" height="1200" loading="lazy"></div>
+          <figcaption><b>Проверить номер</b>Что будет со звонком</figcaption>
+        </figure>
+        <figure class="shot reveal" style="--delay:.32s">
+          <div class="frame"><img src="assets/shots/5_settings.webp" alt="Настройки блокировки и исключений" width="540" height="1200" loading="lazy"></div>
+          <figcaption><b>Настройки</b>Сбросить или заглушить</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="features" style="padding-top:0">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="kicker">Возможности</span>
+        <h2>Важный звонок <em>не потеряется</em></h2>
+      </div>
+      <div class="bento">
+        <article class="card wide reveal">
+          <div>
+            <span class="badge" style="--c1:#1b6b44;--c2:#3f9c6b"><svg class="ic"><use href="#i-shield"/></svg></span>
+            <h3>Решение до первого гудка</h3>
+            <p>Номер есть в контактах или в белом списке, вы сами на него звонили, или с отбитого номера перезвонили через пару минут&nbsp;— телефон звонит. Остальные звонки сбрасываются.</p>
+          </div>
+          <div class="tiles" aria-hidden="true">
+            <div class="tile good"><svg class="ic"><use href="#i-person"/></svg>Мама</div>
+            <div class="tile bad" style="--d:.15s"><svg class="ic"><use href="#i-block"/></svg>Незнакомый</div>
+            <div class="tile good" style="--d:.3s"><svg class="ic"><use href="#i-check"/></svg>Курьер</div>
+            <div class="tile bad" style="--d:.45s"><svg class="ic"><use href="#i-block"/></svg>Скрытый</div>
+            <div class="tile bad" style="--d:.6s"><svg class="ic"><use href="#i-block"/></svg>Робот</div>
+            <div class="tile good" style="--d:.75s"><svg class="ic"><use href="#i-replay"/></svg>Повторный</div>
+            <div class="tile bad" style="--d:.9s"><svg class="ic"><use href="#i-block"/></svg>Опрос</div>
+            <div class="tile good" style="--d:1.05s"><svg class="ic"><use href="#i-outgoing"/></svg>Вы звонили</div>
+          </div>
+        </article>
+        <article class="card reveal" style="--delay:.1s">
+          <span class="badge" style="--c1:#2f8f5b;--c2:#6cc08b"><svg class="ic"><use href="#i-replay"/></svg></span>
+          <h3>Повторный звонок</h3>
+          <p>Перезвонили с отбитого номера в течение 3, 5 или 10 минут&nbsp;— скорее всего, это важно. Такой звонок пройдёт.</p>
+        </article>
+        <article class="card reveal">
+          <span class="badge" style="--c1:#1b6b44;--c2:#2f8f5b"><svg class="ic"><use href="#i-check"/></svg></span>
+          <h3>Белый список</h3>
+          <p>Номера, которых нет в контактах, но звонки с которых нужны. Префикс со звёздочкой&nbsp;— <b>+7343*</b>&nbsp;— пропустит все номера с таким началом.</p>
+        </article>
+        <article class="card reveal" style="--delay:.1s">
+          <span class="badge" style="--c1:#3f9c6b;--c2:#1b6b44"><svg class="ic"><use href="#i-pause"/></svg></span>
+          <h3>Пауза «Жду звонка»</h3>
+          <p>На 30 минут, час или два&nbsp;— с главного экрана или плиткой в шторке. Защита включится сама.</p>
+        </article>
+        <article class="card reveal" style="--delay:.2s">
+          <span class="badge" style="--c1:#2f8f5b;--c2:#1b6b44"><svg class="ic"><use href="#i-outgoing"/></svg></span>
+          <h3>Вы звонили&nbsp;— дозвонятся</h3>
+          <p>Номера, на которые вы сами звонили за 30 дней, проходят без белого списка. Включается в настройках.</p>
+        </article>
+        <article class="card reveal">
+          <span class="badge" style="--c1:#1b6b44;--c2:#6cc08b"><svg class="ic"><use href="#i-list"/></svg></span>
+          <h3>Журнал и уведомления</h3>
+          <p>Все отбитые звонки за 30 дней. Из записи&nbsp;— в белый список или перезвонить. По желанию&nbsp;— уведомление с теми же кнопками.</p>
+        </article>
+        <article class="card reveal" style="--delay:.1s">
+          <span class="badge" style="--c1:#3f9c6b;--c2:#2f8f5b"><svg class="ic"><use href="#i-volume-off"/></svg></span>
+          <h3>Сбросить или заглушить</h3>
+          <p>Звонящий слышит «занято»&nbsp;— или гудки, пока телефон молчит, а звонок остаётся в пропущенных.</p>
+        </article>
+        <article class="card reveal" style="--delay:.2s">
+          <span class="badge" style="--c1:#2f8f5b;--c2:#3f9c6b"><svg class="ic"><use href="#i-search"/></svg></span>
+          <h3>Проверить номер</h3>
+          <p>Покажет, что CallGuard сделает со звонком с любого номера и почему&nbsp;— до того, как он позвонит.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="privacy" id="privacy">
+    <div class="wrap">
+      <div class="island">
+        <div class="head reveal">
+          <span class="kicker">Приватность</span>
+          <h2>Ничего <em>не уходит</em> с телефона</h2>
+          <p>У CallGuard нет разрешения на интернет. Это видно в карточке приложения в магазине: Android просто не даст ему выйти в сеть.</p>
+        </div>
+        <div class="privacy-grid">
+          <ul class="checks reveal">
+            <li><svg class="ic"><use href="#i-check"/></svg><span>Контакты и журнал звонков только читаются, ничего не изменяется.</span></li>
+            <li><svg class="ic"><use href="#i-check"/></svg><span>Без аккаунта, рекламы и статистики.</span></li>
+            <li><svg class="ic"><use href="#i-check"/></svg><span>Журнал отбитых хранится 30 дней и очищается одной кнопкой.</span></li>
+            <li><svg class="ic"><use href="#i-check"/></svg><span>При любой ошибке звонок пропускается: лучше пропустить спам, чем потерять нужный звонок.</span></li>
+          </ul>
+          <div class="reveal" style="--delay:.15s">
+            <div class="flow">
+              <div class="node">
+                <p class="node-title"><svg class="ic"><use href="#i-lock"/></svg>Телефон</p>
+                <ul>
+                  <li>Контакты</li>
+                  <li>Номера входящих</li>
+                  <li>Журнал и белый список</li>
+                </ul>
+                <p class="node-note"><svg class="ic"><use href="#i-check"/></svg>Остаётся здесь</p>
+              </div>
+              <div class="track" aria-hidden="true"><b>✕</b></div>
+              <div class="node">
+                <p class="node-title"><svg class="ic"><use href="#i-wifi-off"/></svg>Интернет</p>
+                <p>Разрешения нет в манифесте приложения. Ни серверов разработчика, ни сторонних сервисов.</p>
+              </div>
+            </div>
+            <a class="more" href="privacy.html">Политика конфиденциальности <svg class="ic"><use href="#i-arrow"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="wrap faq">
+      <div class="head reveal">
+        <span class="kicker">Вопросы</span>
+        <h2>Коротко <em>о главном</em></h2>
+      </div>
+      <div class="qa reveal">
+        <details>
+          <summary>А если позвонит кто-то важный?</summary>
+          <p>Для этого есть повторный звонок (перезвонили в течение нескольких минут&nbsp;— пройдёт), пауза «Жду звонка», белый список и «Пропускать тех, кому я звонил». Каждый отбитый звонок виден в журнале, а по желанию приходит уведомление с кнопкой «Перезвонить».</p>
+        </details>
+        <details>
+          <summary>Нужно менять звонилку?</summary>
+          <p>Нет. CallGuard использует системную роль «Определитель номера и защита от спама»: звоните и принимайте звонки как раньше.</p>
+        </details>
+        <details>
+          <summary>Что слышит звонящий?</summary>
+          <p>В режиме «Сбросить»&nbsp;— «занято». В режиме «Заглушить»&nbsp;— обычные гудки: телефон молчит, а звонок остаётся в пропущенных.</p>
+        </details>
+        <details>
+          <summary>Есть ли база спам-номеров?</summary>
+          <p>Нет, и это намеренно. CallGuard не гадает, кто спамер, а пропускает только своих. Поэтому ему не нужны ни интернет, ни обновления баз&nbsp;— и новый номер мошенника тоже не дозвонится.</p>
+        </details>
+        <details>
+          <summary>Работает ли сразу после перезагрузки?</summary>
+          <p>До первой разблокировки телефона контакты и настройки зашифрованы, и в это время звонки проходят. После разблокировки защита работает как обычно.</p>
+        </details>
+        <details>
+          <summary>А на iPhone?</summary>
+          <p>CallGuard&nbsp;— только для Android 10 и новее.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="beta" style="padding-top:0">
+    <div class="wrap beta">
+      <div class="head reveal">
+        <span class="kicker">Тестирование</span>
+        <h2>Попробуйте CallGuard <em>до релиза</em></h2>
+        <p>Оставьте почту Google-аккаунта&nbsp;— пришлю приглашение в&nbsp;закрытый тест.</p>
+        <ul class="facts">
+          <li><svg class="ic"><use href="#i-check"/></svg>Сборки через Google Play</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Android 10+</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Почта&nbsp;— только для приглашения</li>
+        </ul>
+      </div>
+
+      <form class="card beta-form reveal" id="beta-form">
+        <input type="hidden" name="app" value="callguard">
+        <label><span>Почта</span><input type="email" name="email" required maxlength="200" autocomplete="email" placeholder="name@gmail.com"></label>
+        <label><span>Устройство <small>необязательно</small></span><input name="device" maxlength="100" placeholder="Pixel 7, Android 14"></label>
+        <label><span>Комментарий <small>необязательно</small></span><textarea name="comment" maxlength="1000" rows="3"></textarea></label>
+        <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit">Запросить доступ</button>
+        <span class="beta-status" role="status" aria-live="polite"></span>
+      </form>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap">
+      <div class="island reveal">
+        <img src="assets/favicon.svg" alt="" width="96" height="96">
+        <h2>Телефон звонит, <em>когда нужно</em></h2>
+        <p>Скоро в Google Play и RuStore.</p>
+        <div class="stores">
+          <a class="store" aria-disabled="true"><svg class="ic"><use href="#i-shop"/></svg>
+            <span><small>Скоро в</small><b>Google Play</b></span></a>
+          <a class="store" aria-disabled="true"><svg class="ic"><use href="#i-store"/></svg>
+            <span><small>Скоро в</small><b>RuStore</b></span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="assets/favicon.svg" alt="" width="28" height="28"><span>CallGuard</span></a>
+    <a href="privacy.html">Политика конфиденциальности</a>
+    <span class="copy">© 2026 CallGuard</span>
+  </div>
+</footer>
+
+</body>
+</html>
