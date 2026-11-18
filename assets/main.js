@@ -1,4 +1,4 @@
-// CallGuard site: test access form, header shadow, reveal on scroll.
+// Vakhter site: test access form, header shadow, reveal on scroll.
 (() => {
   // ---------- Test access request → Cloudflare worker → Telegram ----------
 

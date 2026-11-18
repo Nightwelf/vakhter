@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CallGuard — защита от спам-звонков для Android</title>
-  <meta name="description" content="CallGuard сбрасывает звонки с номеров, которых нет в контактах, ещё до того, как телефон зазвонит. Свои дозвонятся. Без интернета, без рекламы.">
+  <title>Вахтёр — защита от спам-звонков для Android</title>
+  <meta name="description" content="Вахтёр сбрасывает звонки с номеров, которых нет в контактах, ещё до того, как телефон зазвонит. Важный звонок всё равно дойдёт. Без интернета, без рекламы.">
   <meta name="theme-color" content="#1b6b44">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="CallGuard">
+  <meta property="og:title" content="Вахтёр">
   <meta property="og:description" content="Звонят только свои. Незнакомые номера сбрасываются ещё до первого гудка.">
-  <meta property="og:url" content="https://nightwelf.github.io/callguard/">
-  <meta property="og:image" content="https://nightwelf.github.io/callguard/assets/og.png">
-  <link rel="canonical" href="https://nightwelf.github.io/callguard/">
+  <meta property="og:url" content="https://nightwelf.github.io/vakhter/">
+  <meta property="og:image" content="https://nightwelf.github.io/vakhter/assets/og.png">
+  <link rel="canonical" href="https://nightwelf.github.io/vakhter/">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -47,7 +47,7 @@
 
 <header class="header">
   <div class="wrap">
-    <a class="brand" href="./"><img src="assets/favicon.svg" alt="" width="34" height="34"><span>CallGuard</span></a>
+    <a class="brand" href="./"><img src="assets/favicon.svg" alt="" width="34" height="34"><span>Вахтёр</span></a>
     <nav class="nav" aria-label="Разделы">
       <a href="#how">Как это работает</a>
       <a href="#features">Возможности</a>
@@ -66,7 +66,7 @@
       <div>
         <span class="eyebrow"><i><svg class="ic"><use href="#i-shield"/></svg></i>Для Android · без интернета</span>
         <h1>Звонят только <em>свои</em></h1>
-        <p class="lead">Надоели «служба безопасности банка», опросы и роботы? CallGuard сбрасывает звонки с номеров, которых нет в контактах, ещё до того, как телефон зазвонит. Знакомые, курьер и поликлиника дозваниваются как обычно.</p>
+        <p class="lead">Надоели «служба безопасности банка», опросы и роботы? Вахтёр сбрасывает звонки с номеров, которых нет в контактах, ещё до того, как телефон зазвонит. Знакомые, курьер и поликлиника дозваниваются как обычно.</p>
         <!-- Not in the stores yet: swap in the real store links after publishing. -->
         <div class="stores">
           <a class="store" aria-disabled="true"><svg class="ic"><use href="#i-shop"/></svg>
@@ -85,7 +85,7 @@
         <div class="notif">
           <img src="assets/favicon.svg" alt="" width="38" height="38">
           <div>
-            <p><span>CallGuard</span><span>сейчас</span></p>
+            <p><span>Вахтёр</span><span>сейчас</span></p>
             <strong>Звонок отбит</strong>
             <p>+7 495 789-00-11</p>
           </div>
@@ -115,12 +115,12 @@
         <article class="card step reveal">
           <svg class="ic"><use href="#i-contacts"/></svg>
           <h3>Откройте доступ к контактам</h3>
-          <p>Чтобы отличать знакомые номера. Контакты только читаются на телефоне и никуда не отправляются.</p>
+          <p>Вахтёр не копирует их в свой список, а сверяется с ними в момент звонка: добавили номер&nbsp;— он уже проходит. Синхронизировать ничего не нужно.</p>
         </article>
         <article class="card step reveal" style="--delay:.1s">
           <svg class="ic"><use href="#i-shield"/></svg>
-          <h3>Сделайте CallGuard фильтром звонков</h3>
-          <p>Одно системное окно. Android будет спрашивать CallGuard о каждом входящем. Звонилку по умолчанию менять не нужно.</p>
+          <h3>Сделайте Вахтёра фильтром звонков</h3>
+          <p>Одно системное окно. Android будет спрашивать Вахтёра о каждом входящем. Звонилку по умолчанию менять не нужно.</p>
         </article>
         <article class="card step reveal" style="--delay:.2s">
           <svg class="ic"><use href="#i-block"/></svg>
@@ -193,24 +193,24 @@
           <p>Перезвонили с отбитого номера в течение 3, 5 или 10 минут&nbsp;— скорее всего, это важно. Такой звонок пройдёт.</p>
         </article>
         <article class="card reveal">
-          <span class="badge" style="--c1:#1b6b44;--c2:#2f8f5b"><svg class="ic"><use href="#i-check"/></svg></span>
-          <h3>Белый список</h3>
-          <p>Номера, которых нет в контактах, но звонки с которых нужны. Префикс со звёздочкой&nbsp;— <b>+7343*</b>&nbsp;— пропустит все номера с таким началом.</p>
-        </article>
-        <article class="card reveal" style="--delay:.1s">
           <span class="badge" style="--c1:#3f9c6b;--c2:#1b6b44"><svg class="ic"><use href="#i-pause"/></svg></span>
           <h3>Пауза «Жду звонка»</h3>
           <p>На 30 минут, час или два&nbsp;— с главного экрана или плиткой в шторке. Защита включится сама.</p>
         </article>
-        <article class="card reveal" style="--delay:.2s">
+        <article class="card reveal" style="--delay:.1s">
           <span class="badge" style="--c1:#2f8f5b;--c2:#1b6b44"><svg class="ic"><use href="#i-outgoing"/></svg></span>
           <h3>Вы звонили&nbsp;— дозвонятся</h3>
           <p>Номера, на которые вы сами звонили за 30 дней, проходят без белого списка. Включается в настройках.</p>
         </article>
+        <article class="card reveal" style="--delay:.2s">
+          <span class="badge" style="--c1:#1b6b44;--c2:#2f8f5b"><svg class="ic"><use href="#i-check"/></svg></span>
+          <h3>Белый список</h3>
+          <p>Номера, которых нет в контактах, но звонки с которых нужны. Префикс со звёздочкой&nbsp;— <b>+7343*</b>&nbsp;— пропустит целый диапазон, например весь Екатеринбург.</p>
+        </article>
         <article class="card reveal">
           <span class="badge" style="--c1:#1b6b44;--c2:#6cc08b"><svg class="ic"><use href="#i-list"/></svg></span>
           <h3>Журнал и уведомления</h3>
-          <p>Все отбитые звонки за 30 дней. Из записи&nbsp;— в белый список или перезвонить. По желанию&nbsp;— уведомление с теми же кнопками.</p>
+          <p>Все отбитые звонки за 30 дней. Из записи&nbsp;— в белый список или перезвонить. По желанию&nbsp;— уведомление с теми же кнопками: нужный номер добавляется в одно касание, не открывая приложение.</p>
         </article>
         <article class="card reveal" style="--delay:.1s">
           <span class="badge" style="--c1:#3f9c6b;--c2:#2f8f5b"><svg class="ic"><use href="#i-volume-off"/></svg></span>
@@ -220,7 +220,7 @@
         <article class="card reveal" style="--delay:.2s">
           <span class="badge" style="--c1:#2f8f5b;--c2:#3f9c6b"><svg class="ic"><use href="#i-search"/></svg></span>
           <h3>Проверить номер</h3>
-          <p>Покажет, что CallGuard сделает со звонком с любого номера и почему&nbsp;— до того, как он позвонит.</p>
+          <p>Покажет, что Вахтёр сделает со звонком с любого номера и почему&nbsp;— до того, как он позвонит.</p>
         </article>
       </div>
     </div>
@@ -232,7 +232,7 @@
         <div class="head reveal">
           <span class="kicker">Приватность</span>
           <h2>Ничего <em>не уходит</em> с телефона</h2>
-          <p>У CallGuard нет разрешения на интернет. Это видно в карточке приложения в магазине: Android просто не даст ему выйти в сеть.</p>
+          <p>Не «мы не передаём данные», а «приложение физически не может ничего отправить»: у Вахтёра нет разрешения на интернет. Это видно в списке разрешений в магазине&nbsp;— Android просто не даст ему выйти в сеть.</p>
         </div>
         <div class="privacy-grid">
           <ul class="checks reveal">
@@ -277,8 +277,12 @@
           <p>Для этого есть повторный звонок (перезвонили в течение нескольких минут&nbsp;— пройдёт), пауза «Жду звонка», белый список и «Пропускать тех, кому я звонил». Каждый отбитый звонок виден в журнале, а по желанию приходит уведомление с кнопкой «Перезвонить».</p>
         </details>
         <details>
+          <summary>Нужно синхронизировать контакты?</summary>
+          <p>Нет. Вахтёр не хранит копию телефонной книги, а проверяет номер по контактам в момент звонка. Добавили или удалили контакт&nbsp;— это сразу учитывается, и защита не может остаться с пустым списком и отбивать всех подряд.</p>
+        </details>
+        <details>
           <summary>Нужно менять звонилку?</summary>
-          <p>Нет. CallGuard использует системную роль «Определитель номера и защита от спама»: звоните и принимайте звонки как раньше.</p>
+          <p>Нет. Вахтёр использует системную роль «Определитель номера и защита от спама»: звоните и принимайте звонки как раньше.</p>
         </details>
         <details>
           <summary>Что слышит звонящий?</summary>
@@ -286,7 +290,7 @@
         </details>
         <details>
           <summary>Есть ли база спам-номеров?</summary>
-          <p>Нет, и это намеренно. CallGuard не гадает, кто спамер, а пропускает только своих. Поэтому ему не нужны ни интернет, ни обновления баз&nbsp;— и новый номер мошенника тоже не дозвонится.</p>
+          <p>Нет, и это намеренно. Вахтёр не гадает, кто спамер, а пропускает только своих. Поэтому ему не нужны ни интернет, ни обновления баз&nbsp;— и новый номер мошенника тоже не дозвонится.</p>
         </details>
         <details>
           <summary>Работает ли сразу после перезагрузки?</summary>
@@ -294,7 +298,11 @@
         </details>
         <details>
           <summary>А на iPhone?</summary>
-          <p>CallGuard&nbsp;— только для Android 10 и новее.</p>
+          <p>Вахтёр&nbsp;— только для Android 10 и новее.</p>
+        </details>
+        <details>
+          <summary>А SMS и мессенджеры?</summary>
+          <p>Нет, Вахтёр фильтрует только обычные сотовые звонки. SMS и звонки в WhatsApp, Telegram и других мессенджерах он не трогает.</p>
         </details>
       </div>
     </div>
@@ -304,7 +312,7 @@
     <div class="wrap beta">
       <div class="head reveal">
         <span class="kicker">Тестирование</span>
-        <h2>Попробуйте CallGuard <em>до релиза</em></h2>
+        <h2>Попробуйте Вахтёра <em>до релиза</em></h2>
         <p>Оставьте почту Google-аккаунта&nbsp;— пришлю приглашение в&nbsp;закрытый тест.</p>
         <ul class="facts">
           <li><svg class="ic"><use href="#i-check"/></svg>Сборки через Google Play</li>
@@ -314,7 +322,7 @@
       </div>
 
       <form class="card beta-form reveal" id="beta-form">
-        <input type="hidden" name="app" value="callguard">
+        <input type="hidden" name="app" value="vakhter">
         <label><span>Почта</span><input type="email" name="email" required maxlength="200" autocomplete="email" placeholder="name@gmail.com"></label>
         <label><span>Устройство <small>необязательно</small></span><input name="device" maxlength="100" placeholder="Pixel 7, Android 14"></label>
         <label><span>Комментарий <small>необязательно</small></span><textarea name="comment" maxlength="1000" rows="3"></textarea></label>
@@ -345,9 +353,9 @@
 
 <footer class="footer">
   <div class="wrap">
-    <a class="brand" href="./"><img src="assets/favicon.svg" alt="" width="28" height="28"><span>CallGuard</span></a>
+    <a class="brand" href="./"><img src="assets/favicon.svg" alt="" width="28" height="28"><span>Вахтёр</span></a>
     <a href="privacy.html">Политика конфиденциальности</a>
-    <span class="copy">© 2026 CallGuard</span>
+    <span class="copy">© 2026 Вахтёр</span>
   </div>
 </footer>
 
